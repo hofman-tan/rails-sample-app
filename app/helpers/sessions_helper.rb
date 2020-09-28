@@ -19,7 +19,7 @@ module SessionsHelper
     # checks if the user has chosen to "remember me" even though the user might not go through the login part
     elsif (user_id = cookies.encrypted[:user_id])
       user = User.find_by(id: user_id)
-      if user && user.authenticated?(cookies[:remember_token])
+      if user && user.authenticated?(:remember, cookies[:remember_token])
         # create a session for user if the user has valid cookie data
         log_in user
         @current_user = user
