@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+    has_many :microposts, dependent: :destroy
+
     attr_accessor :remember_token, :activation_token, :reset_token
     before_save   :downcase_email
     before_create :create_activation_digest
@@ -68,6 +70,14 @@ class User < ApplicationRecord
     # Returns true if a password reset has expired.
     def password_reset_expired?
       reset_sent_at < 2.hours.ago   # password reset sent earlier than two hours ago
+    end
+
+    # Defines a proto-feed.
+    # See "Following users" for the full implementation.
+    def feed
+      # the question mark ensures that id is properly escaped before being included 
+      # in the underlying SQL query, thereby avoiding a serious security hole called SQL injection
+      Micropost.where("user_id = ?", id)
     end
 
     private
