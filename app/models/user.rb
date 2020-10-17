@@ -12,6 +12,8 @@ class User < ApplicationRecord
     # and automatically look for the foreign key follower_id in this case
     has_many :followers, through: :passive_relationships
 
+    has_many :likes, dependent: :destroy
+
     attr_accessor :remember_token, :activation_token, :reset_token
     before_save   :downcase_email
     before_create :create_activation_digest
@@ -104,6 +106,21 @@ class User < ApplicationRecord
     # Returns true if the current user is following the other user.
     def following?(other_user)
       following.include?(other_user)
+    end
+
+    # Likes a micropost
+    def like(micropost)
+      likes << micropost
+    end
+
+    # Returns true if the current user has liked the micropost.
+    def likes?(micropost)
+      likes.include?(micropost)
+    end
+
+    # Returns all microposts liked by current user
+    def get_liked_microposts()
+      likes.all()
     end
 
     private
