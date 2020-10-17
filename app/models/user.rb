@@ -110,7 +110,12 @@ class User < ApplicationRecord
 
     # Likes a micropost
     def like(micropost)
-      likes << micropost
+      likes.create(micropost_id: micropost.id, user_id: id)
+    end
+
+    # unlike a micropost
+    def unlike(micropost)
+      likes.delete(micropost)
     end
 
     # Returns true if the current user has liked the micropost.
@@ -118,10 +123,6 @@ class User < ApplicationRecord
       likes.include?(micropost)
     end
 
-    # Returns all microposts liked by current user
-    def get_liked_microposts()
-      likes.all()
-    end
 
     private
 
