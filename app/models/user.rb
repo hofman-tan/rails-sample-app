@@ -115,7 +115,7 @@ class User < ApplicationRecord
 
     # unlike a micropost
     def unlike(micropost)
-      likes.delete(micropost)
+      likes.find_by(micropost_id: micropost.id, user_id: self.id).destroy
     end
 
     # Returns true if the current user has liked the micropost.

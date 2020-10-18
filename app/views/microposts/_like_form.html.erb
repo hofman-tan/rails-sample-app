@@ -1,5 +1,7 @@
-<% if current_user.likes?(@micropost) %>
-    <%= render 'microposts/unlike' %>
-<% else %>
-    <%= render 'microposts/like' %>
-<% end %>
+<div id="like_form">
+    <% if current_user.likes?(micropost) %>
+        <%= render partial: 'microposts/unlike', locals:{micropost: micropost} if logged_in? %>
+    <% else %>
+        <%= render partial: 'microposts/like', locals:{micropost: micropost} if logged_in? %>
+    <% end %>
+</div>
