@@ -120,7 +120,7 @@ class User < ApplicationRecord
 
     # Returns true if the current user has liked the micropost.
     def likes?(micropost)
-      likes.include?(micropost)
+      likes.exists? micropost_id: micropost.id
     end
 
 
