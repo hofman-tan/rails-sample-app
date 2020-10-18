@@ -5,7 +5,6 @@ class LikesController < ApplicationController
         @user = current_user
         @micropost = Micropost.find(params[:micropost_id])
         current_user.like(@micropost)
-        puts "testtestwerwer #{@micropost.id}"
         respond_to do |format|
             format.html { redirect_to @user }
             format.js
