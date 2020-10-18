@@ -2,8 +2,8 @@ class UsersController < ApplicationController
   # by default before filters apply to every action in a controller, which is not we want e.g. in sign up page
   # thus we limit it to only edit and update actions
   before_action :logged_in_user, only: [:index, :edit, :update, :destroy,
-                                        :following, :followers]
-  before_action :correct_user,   only: [:edit, :update]
+                                        :following, :followers, :likes]
+  before_action :correct_user,   only: [:edit, :update, :likes]
   before_action :admin_user,     only: :destroy
 
   def index
@@ -64,6 +64,13 @@ class UsersController < ApplicationController
     @user  = User.find(params[:id])
     @users = @user.followers.paginate(page: params[:page])
     render 'show_follow'
+  end
+
+  def likes
+    @title = "Likes"
+    @user = User.find(params[:id])
+    @likes = @user.liked_microposts.paginate(page: params[:page])
+    render 'show_likes'
   end
 
 

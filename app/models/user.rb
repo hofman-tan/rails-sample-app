@@ -14,6 +14,8 @@ class User < ApplicationRecord
 
     has_many :likes, dependent: :destroy
 
+    has_many :liked_microposts, through: :likes, source: :micropost
+
     attr_accessor :remember_token, :activation_token, :reset_token
     before_save   :downcase_email
     before_create :create_activation_digest
@@ -110,17 +112,17 @@ class User < ApplicationRecord
 
     # Likes a micropost
     def like(micropost)
-      likes.create(micropost_id: micropost.id, user_id: id)
+      liked_microposts << micropost
     end
 
     # unlike a micropost
     def unlike(micropost)
-      likes.find_by(micropost_id: micropost.id, user_id: self.id).destroy
+      liked_microposts.delete(micropost)
     end
 
     # Returns true if the current user has liked the micropost.
     def likes?(micropost)
-      likes.exists? micropost_id: micropost.id
+      liked_microposts.include?(micropost)
     end
 
 
