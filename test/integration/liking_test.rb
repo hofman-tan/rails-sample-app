@@ -4,6 +4,7 @@ class LikingTest < ActionDispatch::IntegrationTest
 
   def setup
     @user = users(:michael)
+    @other_user = users(:archer)
     @micropost = microposts(:ants)
     log_in_as(@user)
   end
@@ -27,6 +28,7 @@ class LikingTest < ActionDispatch::IntegrationTest
     end
   end
 
+  
   test "should like a micropost the standard way" do
     assert_difference '@user.likes.count', 1 do
       post likes_path, params: { micropost_id: @micropost.id }
